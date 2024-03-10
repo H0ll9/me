@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+*{
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Inter;
+}
+body{
+    background-color: hsl(0, 0%, 8%);
+    display: flex;
+    justify-content: center;
+}
+.container{
+    margin-top: 100px;
+    width: 330px;
+    height: 550px;
+    background-color: hsl(0, 0%, 12%);
+    border-radius: 12px;
+    text-align: center;
+}
+
+#project-pic{
+    width: 130px;
+    padding: 20px;
+    border-radius: 50%; 
+}
+#name{
+    font-weight: 700;
+    font-size: 18px;
+    color: hsl(0, 0%, 100%);
+    padding-bottom: 9px;
+}
+#location{
+    color: hsl(75, 94%, 57%);
+    font-size: 12px;
+    padding-bottom: 20px;
+}
+#skill{
+    color: hsl(0, 0%, 100%);
+    font-size: 12px;
+    padding-bottom: 20px;
+}
+.btns{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button:hover{
+    background-color: hsl(75, 94%, 57%);
+    color: black;
+    cursor: pointer;
+}
+button{
+    font-weight: 600;
+    color: hsl(0, 0%, 100%);
+    background-color: hsl(0, 0%, 20%);
+    border: 1px solid hsl(0, 0%, 20%);
+    width: 270px;
+    height: 45px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+@media only screen and (min-width:460px){
+    .container{
+        padding-top: 20px;
+        width: 380px;
+        height: 580px;
+    }
+    
+}
