@@ -1,1 +1,2 @@
-You can see my solution here: https://h0ll9.github.io/Profile-Frontend/
+my fist frontend project 
+https://h0ll9.github.io/Profile-Frontend/
