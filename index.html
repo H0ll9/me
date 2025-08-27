@@ -1,27 +1,994 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <link id="icon" rel="shortcut icon" href="./favicon-32x32.png" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Portfolio - H0ll9</title>
+<meta name="description" content="Offensive & Defensive Portfolio " />
+<style>
+
+  :root{
+    
+    --bg:#06040a;                
+    --panel:#0a0b12;            
+    --neon-cyan:#00f0ff;
+    --neon-magenta:#01d673;
+    --neon-purple:#74c54c;
+    --muted-cyan:rgba(0,240,255,0.12);
+    --glass: rgba(255,255,255,0.02);
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+    --ease:cubic-bezier(.16,.9,.3,1); 
+   
+    /* --bg:#06040a;                
+    --panel:#0a0b12;            
+    --neon-cyan:hsl(93, 100%, 51%);
+    --neon-magenta:#00ffff;
+    --neon-purple:#7fff3f;
+    --muted-cyan:rgba(0,240,255,0.12);
+    --glass: rgba(255,255,255,0.02);
+    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+    --ease:cubic-bezier(.16,.9,.3,1);  */
+   
+   
+
+  }
+
+  .redteam{
+    color: #fd0202;
+    background: transparent;
+    border: none;
+
+}
+
+.blueteam{
+    color: #0846f0b0;
+    background: transparent;
+    border: none
+}
+
+    body {
+      -webkit-user-select: none; /* Chrome, Safari */
+      -moz-user-select: none;    /* Firefox */
+      -ms-user-select: none;     /* Internet Explorer/Edge */
+      user-select: none;         /* Standard */
+    }
+    
+  .project-summary{
+    color: #807979;;
+  }
+  
+  html,body{
+    height:100%;
+    margin:0;
+    background:var(--bg);
+    
+    color:var(--neon-cyan);
+    font-family:var(--mono);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.45
+  }
+  
+  a{
+    color:var(--neon-cyan);
+    text-decoration:none
+  }
+  
+  *:focus{
+    outline:2px solid rgba(255,255,255,0.04);
+    outline-offset:3px
+    }
+
+  button{
+    font-family:var(--mono);
+    cursor:pointer
+    }
+
+  /* Canvas layers */
+  
+  canvas{
+      position:fixed;
+      left:0;
+      top:0;
+      width:100%;
+      height:100%;
+      pointer-events:none;
+      z-index:0
+    }
+
+  #matrix{
+      mix-blend-mode:screen;
+      opacity:0.26
+    }
+
+  #particles{
+    opacity:0.95;
+    filter:blur(.2px)
+  }
+
+  #scan{
+    mix-blend-mode:overlay;
+    opacity:0.06
+  }
+
+  /* Layout */
+  .wrap{
+      position:relative;
+      min-height:100vh;
+      z-index:2
+    }
+
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:28px 6vw 12px;
+    gap:18px
+  }
+
+  .brand{
+      display:flex;
+      gap:14px;
+      align-items:center
+    }
+  .logo{
+    width:56px;
+    height:56px;
+    border-radius:10px;
+    border:1px solid rgba(255, 255, 255, 0);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(180deg,var(--muted-cyan),transparent);
+    box-shadow:0 8px 30px rgba(0,0,0,0.6)
+  }
+  nav{
+    display:flex;
+    gap:10px;
+    align-items:center
+  }
+  .btn{
+    padding:8px 12px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.03);
+    background:transparent;
+    color:var(--neon-cyan);
+    font-weight:700
+  }
+  .btn.alt{
+    background:linear-gradient(90deg, rgba(155,89,255,0.06), rgba(255,46,199,0.05));
+    color: #fff
+  }
+
+  main{
+    max-width:1200px;
+    margin:10px auto;
+    padding:8px 6vw 80px;
+    z-index:2;
+    position:relative
+  }
+
+  /* Hero */
+
+  .hero{
+    display:grid;
+    grid-template-columns:1fr 360px;
+    gap:22px;
+    align-items:start;
+    margin:8px 0 18px
+  }
+  
+  @media (max-width:960px){ 
+    .hero{
+      grid-template-columns:1fr;
+    }
+  }
+  .hero-panel{
+    background:linear-gradient(180deg, rgba(194, 51, 51, 0.01), rgba(255,255,255,0.002));
+    border-radius:12px;
+    padding:20px;
+    border:1px solid rgba(255, 255, 255, 0.192);
+    backdrop-filter: blur(6px);
+    transition:transform .6s var(--ease);
+  }
+  
+  .hero-panel:hover{
+    transform:translateY(-6px);
+    animation:glitch 2.2s infinite;
+  }
+
+  .title {
+    font-size:clamp(20px, 3.4vw, 34px);
+    margin:0;
+    line-height:1;
+    letter-spacing:1px;
+  }
+
+  .hglitch{
+    display:inline-block;
+    position:relative;
+    font-weight:900;
+    color:var(--neon-cyan)
+  }
+
+  .hglitch::before,.hglitch::after{
+    content:attr(data-text);
+    position:absolute;
+    left:0;
+    top:0;
+    opacity:0.9
+  }
+
+  .hglitch::before{
+    left:2px;
+    color:var(--neon-magenta);
+    clip-path:polygon(0 55%,100% 55%,100% 100%,0 100%)
+  }
+  .hglitch::after{
+    left:-2px;
+    color:var(--neon-purple);
+    animation:glitch 2.2s infinite
+  }
+  
+  @keyframes glitch{
+    0%{
+      transform:none;
+       border :1px solid rgba(94, 255, 0, 0.863);
+    }
+    20%{
+      transform:translate(-2px,1px);
+      border :1px solid rgba(0, 255, 255, 0.815);
+    }
+    40%{
+      transform:translate(2px,-1px);
+      border :1px solid rgba(98, 245, 13, 0.856);
+    }
+    60%{
+      transform:translate(-3px,2px);
+       border: 1px solid rgba(0, 255, 242, 0.959);
+    }
+    80%{
+      transform:translate(1px,-1px);
+      border :1px solid rgb(94, 255, 0);
+    }
+    100%{
+      transform:none;
+      border: 1px solid rgba(0, 255, 242, 0.897);
+    }
+  }
+
+
+  .subtitle{
+   
+    color:linear-gradient(40deg,var(--neon-cyan),var(--neon-magenta));
+    margin-top:8px;
+    font-size:16px
+  }
+
+  /* Cards / sections */
+  section.card{
+    margin:18px 0;
+    border-radius:12px;
+    padding:18px;
+    border:1px solid rgba(255, 255, 255, 0.199);
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.002));
+    transition:transform .45s var(--ease)
+  }
+  section.card:hover{
+   
+    animation:glitch 2.2s infinite;
+    transition:transform .45s ;
+  }
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:10px
+  }
+
+  .dot{
+    width:12px;
+    height:12px;
+    border-radius:3px;
+    background:linear-gradient(90deg,var(--neon-cyan),var(--neon-magenta));
+    box-shadow:0 8px 18px rgba(0,0,0,0.06)
+  }
+ 
+  .section-title{
+    font-size:16px;
+    font-weight:800;
+    color:linear-gradient(90deg,var(--neon-cyan),var(--neon-magenta))
+  }
+
+  /* terminal */
+  .terminal{
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.003));
+    padding:14px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.02);
+    min-height:84px;
+    font-size:16px;
+    color:#d6fbff;
+    white-space:pre-wrap;
+    line-height:1.4;
+    overflow:hidden
+  }
+
+  .code-syntax .kw{
+    color:var(--neon-magenta);
+    font-weight:700
+  }
+  .code-syntax .str{
+    color:var(--neon-cyan)
+  }
+  .code-syntax .cm{
+    color:rgba(255,255,255,0.45);
+    font-style:italic
+  }
+
+  /* skills bars */
+  .skills{
+    display:flex;
+    flex-direction: row;
+    gap:18px;
+    flex-wrap:wrap
+  }
+  .skill-col{
+    flex:1;
+    min-width:220px
+  }
+  .skill{
+    margin-bottom:12px
+  }
+  .skill .label{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    color:rgba(255,255,255,0.78)
+  }
+  .bar{
+    height:10px;
+    background:rgba(0, 0, 0, 0.217);
+    border-radius:8px;
+    margin-top:6px;
+    overflow:hidden;
+    border:1px solid rgba(0, 0, 0, 0.189)
+  }
+  .bar-fill{
+    height:100%;
+    background:linear-gradient(90deg,var(--neon-cyan),var(--neon-magenta));
+    width:0%;
+    transition:width 1.2s var(--ease)
+  }
+
+  /* projects grid */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:14px}
+
+  .proj{
+    padding:12px;
+    border-radius:10px;
+    background:linear-gradient(90deg, rgba(0, 0, 0, 0.258), rgba(155,89,255,0.02));
+    border:1px solid rgba(255,255,255,0.02)}
+
+  /* badges */
+  .badges{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px
+  }
+  .badge{
+    min-width:140px;
+    padding:12px;
+    border-radius:10px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.002));
+    border:1px solid rgba(9, 255, 0, 0.178);
+    cursor:pointer;
+    transition:transform .45s var(--ease)
+  }
+
+  .badge:hover{
+    transform:translateY(-8px) rotateX(4deg);
+     border:1px solid rgba(25, 255, 5, 0.664);
+  }
+
+  /* resume modal */
+  .modal{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,0.6);
+    z-index:40;
+    padding:20px;
+    backdrop-filter: blur(3px)
+  }
+ 
+  .modal-card{
+    width:min(980px,96%);
+    max-height:88vh;
+    overflow:auto;
+    border-radius:12px;
+    padding:18px;
+    background:linear-gradient(180deg,#06040a,#050312);
+    border:1px solid rgba(255,255,255,0.03)
+  }
+
+  /* reveal helpers */
+  .reveal{
+    opacity:0;
+    transform:translateY(16px);
+    transition:opacity .9s var(--ease), transform .9s var(--ease)
+  }
+
+  .reveal.visible{
+    opacity:1;
+    transform:none
+  }
+  
+  @media (prefers-reduced-motion: reduce){
+    *{
+      transition:none!important;
+      animation:none!important
+    }
+  }
+
+  /* small utilities */
+  .meta{
+      font-size:13px;
+      color:rgba(255,255,255,0.6);
+      margin-top:8px
+      }
+
+</style>
 </head>
 <body>
-    <div class="container">
-        <div id="profile">
-            <img id="project-pic" src="./avatar-jessica.jpeg">
-            <h3 id="name">Jessica Randall</h3>
-            <h5 id="location">London, United Kingdom</h5>
-            <p id="skill">"Front-end developer and avid reader"</p>
+  <!-- Canvas layers -->
+  <canvas id="matrix" aria-hidden="true"></canvas>
+  <canvas id="particles" aria-hidden="true"></canvas>
+  <canvas id="scan" aria-hidden="true"></canvas>
+
+  <div class="wrap" role="application" aria-label="Cyberpunk portfolio">
+    <header>
+      <div class="brand" role="banner">
+        <div class="logo" aria-hidden="true">
+          <!-- stylized shield -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2 L4 6v6c0 5 4 9 8 9s8-4 8-9V6z"></path>
+            <path d="M8 12c1.3-0.8 3-0.8 4 0"></path>
+          </svg>
         </div>
-        <div class="btns">
-            <button>GitHub</button>
-            <button>Frontend Mentor</button>
-            <button>Linkedin</button>
-            <button>Twitter</button>
-            <button>Instragram</button>
+        <div>
+     
         </div>
-    </div>
+      </div>
+
+      <nav aria-label="Quick links">
+        <button class="btn" onclick="scrollToId('#about')">About</button>
+        <button class="btn" onclick="scrollToId('#ctf')">CTFs</button>
+        <button class="btn" onclick="scrollToId('#projects')">Projects</button>
+        <button class="btn alt" onclick="window.open('https://drive.google.com/drive/u/1/folders/1SGG1ueB9sYjheEUzItiXPd26hJbpG6Ej','_blank')">Resume</button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero-panel reveal" id="hero">
+        <div style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+          <div style="flex:1;min-width:260px">
+            <h2 style="margin:0;color:var(--neon-magenta)">Hi — I'm <strong style="color:var(--neon-cyan)">H0LL9</strong></h2>
+            <div class="terminal" id="hero-terminal" tabindex="0" aria-live="polite" style="margin-top:12px">
+              <!-- hero typed -->
+            </div>
+            <!-- <div class="meta">Offensive & defensive security. CTF competitor. Programmer, Web and Software Developer</div> -->
+          </div>
+
+          <aside style="width:320px">
+            <div style="padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(155,89,255,0.03), rgba(255,46,199,0.02));border:1px solid rgba(255,255,255,0.02)">
+              <div style="display:flex;gap:10px;align-items:center">
+                <div style="width:56px;height:56px;border-radius:8px;background:linear-gradient(135deg, rgba(0,240,255,0.06), rgba(155,89,255,0.02));display:flex;align-items:center;justify-content:center;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="width:36px;height:36px">
+                    <circle cx="12" cy="8" r="3"></circle><path d="M6 19c1-3 5-4 6-4s5 1 6 4"></path>
+                  </svg>
+                </div>
+                <div>
+                  <div style="font-weight:800">Lakshmisha Holla</div>
+                  <div style="font-size:13px;color:rgba(255,255,255,0.7)">Master of Computer Application</div>
+                </div>
+              </div> 
+            </div>
+
+            <div style="margin-top:12px;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.002));border:1px solid rgba(255,255,255,0.02)">
+              <div style="font-weight:800;color:var(--neon-cyan)">Quick Stats</div>
+              <div style="margin-top:8px;color:rgba(255,255,255,0.8)">Pursuing Ethical Hacker Course By CISCO</div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ABOUT -->
+      <section class="card reveal" id="about" aria-labelledby="aboutTitle">
+        <div class="section-head"><div class="dot"></div><div class="section-title" id="aboutTitle">About Me</div></div>
+        <div class="terminal code-syntax" id="about-terminal" tabindex="0" aria-live="polite"></div>
+        
+      </section>
+
+      <!-- SKILLS -->
+      <section class="card reveal" id="skills" aria-labelledby="skillsTitle">
+        <div class="section-head"><div class="dot"></div><div class="section-title" id="skillsTitle">Cyber Security Skills </div></div>
+        <div class="skills">
+          <div class="skill-col">
+            <div style="font-weight:800;margin-bottom:6px;color:var(--neon-magenta)">Red Team</div>
+            <div class="skill">
+              <div class="label"><span>Web Exploitation</span><span>92%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="92%"></div></div>
+            </div>
+            <div class="skill">
+              <div class="label"><span>OSINT (Recon-ng, Shodan, SpiderFoot)</span><span>88%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="88%"></div></div>
+            </div>
+
+            <div class="skill">
+              <div class="label"><span>Password Cracking (john the ripper, hashcat)</span><span>94%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="94%"></div></div>
+            </div>
+
+             <div class="skill">
+              <div class="label"><span>Social Engineering (BeEF, Social Engineering Toolkit, Web Cloaning)</span><span>80%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="80%"></div></div>
+            </div>
+
+          </div>
+
+          <div class="skill-col">
+            <div style="font-weight:800;margin-bottom:6px;color:var(--neon-cyan)">Blue Team</div>
+            <div class="skill">
+              <div class="label"><span>Network Forensics (Wireshark, tcpdump, tshark)</span><span>90%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="90%"></div></div>
+            </div>
+            <div class="skill">
+              <div class="label"><span>Threat Hunting (VirusTotal, Hybrid Analysis, Any.run, Google Dorking)</span><span>82%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="82%"></div></div>
+            </div>
+            <div class="skill">
+              <div class="label"><span>File System Analysis (MBR - Master Boot Record, GPT - GUID Partition Table)</span><span>85%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="85%"></div></div>
+            </div>
+            <div class="skill">
+              <div class="label"><span>Windows Registry Forensics (Registry hives, Data Acquisition, Evidence of Execution,External USB device forensics)</span><span>88%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="88%"></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- SKILLS -->
+      <section class="card reveal" id="skills" aria-labelledby="skillsTitle">
+        <div class="section-head"><div class="dot"></div><div class="section-title" id="skillsTitle">IT Skills </div></div>
+        <div class="skills">
+          <div class="skill-col">
+            <div style="font-weight:800;margin-bottom:6px;color:var(--neon-magenta)">DevOps</div>
+            <div class="skill">
+              <div class="label"><span>Docker (images, container, docker-compose)</span><span>80%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="80%"></div></div>
+            </div>
+
+            <div class="skill">
+              <div class="label"><span>Linux (Debian, Archlinux, Fedora)</span><span>98%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="98%"></div></div>
+            </div>
+
+            <div class="skill">
+              <div class="label"><span>Virtualization (Virtual Box, QEMU)</span><span>88%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="88%"></div></div>
+            </div>
+
+            <div class="skill">
+              <div class="label"><span>Networking (ASN, Router, Switches, DNS, DHSCP, TCP/IP, UDP)</span><span>78%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="78%"></div></div>
+            </div>
+          </div>
+
+
+          <div class="skill-col">
+            <div style="font-weight:800;margin-bottom:6px;color:var(--neon-cyan)">Programming Language</div>
+            <div class="skill">
+              <div class="label"><span>C (Pointer, Datatypes, socket programming)</span><span>90%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="90%"></div></div>
+            </div>
+
+            <div class="skill">
+              <div class="label"><span>Python (OOP, numpy, pandas, matplotlib, seaborn)</span><span>94%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="94%"></div></div>
+            </div>
+
+            <div class="skill">
+              <div class="label"><span>Java (Servlets, JSP, Bean Class, Swing)</span><span>94%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="94%"></div></div>
+            </div>
+            <div class="skill">
+              <div class="label"><span>HTML, CSS, PHP, JAVASCRIPT ( Web Application development )</span><span>94%</span></div>
+              <div class="bar"><div class="bar-fill" data-fill="94%"></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTFs -->
+      <section class="card reveal" id="ctf" aria-labelledby="ctfTitle">
+        <div class="section-head"><div class="dot"></div><div class="section-title" id="ctfTitle">Active Learning Platforms</div></div>
+        <!-- <div style="margin-top:12px;display:flex;gap:8px;flex-direction:row;overflow: hidden;"> -->
+        
+
+          <a class="btn" class="skill" href="#" onclick="openLink('https://cyberdefenders.org/p/0xFreeL')">  CyberDefender  </a>
+          <a class="btn" class="skill" href="#" onclick="openLink('https://leetcode.com/u/zpHBGDxZ1a/')">  Leetcode  </a>
+          <a class="btn" class="skill" href="#" onclick="openLink('https://www.hackerrank.com/profile/0xFreeL')">  HackerRank  </a>
+          <a class="btn" class="skill" href="#" onclick="openLink('https://tryhackme.com/p/0xFreeL')">  TryHackMe  </a>
+          <a class="btn" class="skill" href="#" onclick="openLink('https://app.hackthebox.com/profile/1771253')">  HackTheBox  </a>
+              
+        <!-- </div>  -->
+      </section>
+
+      <!-- Projects -->
+      <section class="card reveal" id="projects" aria-labelledby="projectsTitle">
+        <div class="section-head"><div class="dot"></div><div class="section-title" id="projectsTitle">Selected Projects</div></div>
+        <div class="grid">
+          <div class="proj" tabindex="0">
+            <strong>Subdomain-X-DnsFinder</strong>
+            <p class="project-summary" >Python script to Find subdomains using a wordlist and Retrieve DNS records for a given domain.</p>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button  class="redteam" >Red Team</button>
+                <button class="btn alt" onclick="window.open('https://github.com/H0ll9/Subdomain-X-DnsFinder', '_blank');">Preview</button>
+            </div>
+          </div>
+
+          <div class="proj" tabindex="0">
+            <strong>Port-Scanner</strong>
+            <p class="project-summary" >A Multithreaded Python port scanner that identifies open ports, detects services, and attempts to retrieve banners.</p>
+            <div style="display:flex;gap:8px;margin-top:8px">
+                <button class="redteam" >Red Team</button>
+                <button class="btn alt" onclick="window.open('https://github.com/H0ll9/Port-Scanner', '_blank')">Preview</button>
+            </div>
+          </div>
+
+          
+          <div class="proj" tabindex="0">
+              <strong>Python-Pentest</strong>
+              <p class="project-summary" >
+                  <ul>
+                      <li class="project-summary">Bannergraber</li>
+                    <li class="project-summary">DOS-Email</li>
+                    <li class="project-summary">NMAP</li>
+                    <li class="project-summary">Py-Tools [Bruteforce, SQL-XSS-VulnScanner, ncat]</li>
+                    <li class="project-summary">TCP client and server</li>
+                </ul>
+            </p>
+            <div style="display:flex;gap:8px;margin-top:8px">
+                <button class="redteam" onclick="microPulse(this)">Red Team</button>
+                <button class="btn alt" onclick="window.open('https://github.com/H0ll9/Python-Pentest', '_blank')">Preview</button>
+            </div>
+        </div>
+        
+        <div class="proj" tabindex="0">
+         <strong>PDF-Password-Cracker</strong>
+         <p class="project-summary" >About Python script to Brute-force the password of a protected PDF using wordlist or Dynamically generated passwords</p>
+         <div style="display:flex;gap:8px;margin-top:8px">
+           <button class="redteam" >Red Team</button>
+           <button class="btn alt" onclick="window.open('https://github.com/H0ll9/PDF-Password-Cracker', '_blank')">Preview</button>
+         </div>
+       </div>
+        
+        <div class="proj" tabindex="0">
+          <strong>PassArmorXChecker</strong>
+          <p class="project-summary" >Enhance user authentication by ensuring that passwords meet strong security standards and have not been compromised in past data breaches.</p>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="blueteam" >Blue Team</button>
+            <button class="btn alt" onclick="window.open('https://github.com/H0ll9/PassArmorXChecker', '_blank')">Preview</button>
+          </div>
+        </div>
+        
+        
+        <div class="proj" tabindex="0">
+            <strong>PDF-Protector</strong>
+            <p class="project-summary" >Python Tool to Encrypt and Decrypt PDF file using PyPDF2 Python Library.</p>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="blueteam" >Blue Team</button>
+              <button class="btn alt" onclick="window.open('https://github.com/H0ll9/PDF-Protector', '_blank')">Preview</button>
+            </div>
+        </div>
+
+
+           <div class="proj" tabindex="0">
+            <strong>Splunk-SIEM</strong>
+            <p class="project-summary" >
+                <ul class="project-summary">
+                    <li>Exploring SPL and explore the basics of the Search Processing Language.</li>
+                    <li>Splunk Rule for Detecting Bruteforce</li>
+                </ul>
+            </p>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="blueteam" >Blue Team</button>
+              <button class="btn alt" onclick="window.open('https://github.com/H0ll9/Splunk-SIEM', '_blank')">Preview</button>
+            </div>
+          </div>
+
+           <div class="proj" tabindex="0">
+            <strong>Cryptographic System</strong>
+            <p class="project-summary" >Learning functionality and breaking Cryptographic System.
+                <ul class="project-summary">
+                    <li>Bit Flipping</li>
+                    <li>RSA</li>
+                </ul>
+            </p>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <button class="blueteam" >Blue Team</button>
+              <button class="btn alt" onclick="showModal()">Preview</button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- BADGES -->
+      <section class="card reveal" id="badges" aria-labelledby="badgesTitle">
+        <div class="section-head"><div class="dot"></div><div class="section-title" id="badgesTitle">Badges & Certifications</div></div>
+        <div class="badges" id="badges-container" role="list">
+          
+          <div class="badge" role="listitem" onclick="window.open('https://drive.google.com/drive/u/1/folders/1SGG1ueB9sYjheEUzItiXPd26hJbpG6Ej','_blank')" tabindex="0">Ethical Hacker (In Progress)</div>
+          <div class="badge" role="listitem" onclick="window.open('https://drive.google.com/drive/u/1/folders/1SGG1ueB9sYjheEUzItiXPd26hJbpG6Ej','_blank')" tabindex="0">Introduction to Cybersecurity</div>
+          <div class="badge" role="listitem" onclick="window.open('https://drive.google.com/drive/u/1/folders/1SGG1ueB9sYjheEUzItiXPd26hJbpG6Ej','_blank')" tabindex="0">Cybersecurity Threat Landscape</div>
+          <div class="badge" role="listitem" onclick="window.open('https://drive.google.com/drive/u/1/folders/1SGG1ueB9sYjheEUzItiXPd26hJbpG6Ej','_blank')" tabindex="0">Introduction To Hacking Methodology</div>
+          <div class="badge" role="listitem" onclick="window.open('https://tryhackme.com/p/0xFreeL','_blank')" tabindex="0">O h S I N T</div>
+          <div class="badge" role="listitem" onclick="window.open('https://tryhackme.com/p/0xFreeL','_blank')" tabindex="0">Hacking Wreath by exploiting and pivoting through a network</div>
+          <div class="badge" role="listitem" onclick="window.open('https://tryhackme.com/p/0xFreeL','_blank')" tabindex="0">OWASP Top 10 vulnerability</div>
+          <div class="badge" role="listitem" onclick="window.open('https://tryhackme.com/p/0xFreeL','_blank')" tabindex="0">Hash Cracker</div>
+        <div class="badge" role="listitem" onclick="window.open('https://tryhackme.com/p/0xFreeL','_blank')" tabindex="0">EternalBlue</div>
+        
+        </div>  
+      </section>
+
+      <!-- CONTACT -->
+      <section class="card reveal" id="contact" aria-labelledby="contactTitle">
+        <div class="section-head"><div class="dot"></div><div class="section-title" id="contactTitle">Contact</div></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+          <button class="btn" onclick="copyEmail()">Email</button>
+          <a class="btn" href="#" onclick="openLink('https://github.com/h0ll9')">GitHub</a>
+          <a class="btn" href="#" onclick="openLink('https://www.linkedin.com/in/lakshmisha-holla')">LinkedIn</a>
+          <a class="btn" href="#" onclick="openLink('https://x.com/0xFreeL')">X</a>
+          
+        </div>
+        <div class="meta">Open to internships, collaborations & Jobs.</div>
+      </section>
+
+      <footer style="margin-top:22px;color:rgba(255,255,255,0.45);text-align:center;font-size:13px">© 2025 • Enumeration is a key to every impossible problem</footer>
+    </main>
+  </div>
+
+
+
+<script>
+/* ===========================
+   Cinematic Neon Interaction
+   =========================== */
+
+(function(){
+  /* ---------- Canvas: Matrix (light) ---------- */
+  const matrix = document.getElementById('matrix');
+  const ctxM = matrix.getContext('2d');
+  let W = matrix.width = innerWidth;
+  let H = matrix.height = innerHeight;
+  const fontSize = 16;
+  let cols = Math.floor(W / fontSize);
+  const drops = new Array(cols).fill(0);
+  const letters = '01<>/\\|{}[]()=+-*~ﾌﾘｻｲｿﾁﾄﾑ';
+
+  function drawMatrix(){
+    ctxM.fillStyle = 'rgba(6,4,10,0.12)';
+    ctxM.fillRect(0,0,W,H);
+    ctxM.fillStyle = 'rgba(0,240,255,0.08)'; // cyan tint, low opacity
+    ctxM.font = fontSize + 'px monospace';
+    for(let i=0;i<cols;i++){
+      const text = letters.charAt(Math.floor(Math.random()*letters.length));
+      ctxM.fillText(text, i*fontSize, drops[i]*fontSize);
+      if(drops[i]*fontSize > H && Math.random() > 0.98) drops[i]=0;
+      drops[i]++;
+    }
+  }
+
+  /* ---------- Canvas: Particles (cursor) ---------- */
+  const particlesCanvas = document.getElementById('particles');
+  const ctxP = particlesCanvas.getContext('2d');
+  particlesCanvas.width = W; particlesCanvas.height = H;
+  const particles = [];
+  function spawnParticle(x,y,opts={}){
+    particles.push({
+      x,y,
+      vx:(Math.random()-0.5)*(opts.vx||2),
+      vy:(Math.random()-0.5)*(opts.vy||2),
+      life:(opts.life||60)+Math.random()*30,
+      r:(opts.r||1)+Math.random()*3,
+      hue: Math.random()*360
+    });
+  }
+  function updateParticles(){
+    ctxP.clearRect(0,0,W,H);
+    for(let i=particles.length-1;i>=0;i--){
+      const p = particles[i];
+      p.x += p.vx; p.y += p.vy; p.life--;
+      ctxP.beginPath();
+      const alpha = Math.max(0, p.life/100);
+      ctxP.fillStyle = `hsla(${100 + (p.hue%120)},100%,70%,${alpha})`;
+      ctxP.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctxP.fill();
+      if(p.life<=0) particles.splice(i,1);
+    }
+  }
+
+  /* ---------- Canvas: scanlines ---------- */
+  const scan = document.getElementById('scan');
+  const ctxS = scan.getContext('2d');
+  function drawScan(){
+    scan.width = W; scan.height = H;
+    ctxS.clearRect(0,0,W,H);
+    ctxS.fillStyle = 'rgba(255,255,255,0.02)';
+    for(let y=0;y<H;y+=6){
+      ctxS.fillRect(0,y,W,1);
+    }
+  }
+
+  /* ---------- Resize ---------- */
+  function resize(){
+    W = matrix.width = particlesCanvas.width = scan.width = innerWidth;
+    H = matrix.height = particlesCanvas.height = scan.height = innerHeight;
+    cols = Math.floor(W / fontSize);
+    drops.length = cols;
+    for(let i=0;i<drops.length;i++) if(!drops[i]) drops[i] = Math.random()*H/fontSize;
+    drawScan();
+  }
+  addEventListener('resize', resize);
+  resize();
+
+  /* ---------- Loop ---------- */
+  let frame=0;
+  function loop(){
+    frame++;
+    if(frame % 2 === 0) drawMatrix();
+    updateParticles();
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  /* ---------- Cursor interactions ---------- */
+  addEventListener('mousemove', (e) => {
+    for(let i=0;i<3;i++) spawnParticle(e.clientX + (Math.random()-0.5)*8, e.clientY + (Math.random()-0.5)*8, {life:40 + Math.random()*30, r:1+Math.random()*2});
+  });
+
+  /* ---------- Typing / terminal ---------- */
+  function typer(el, lines, opts={}){
+    let iL=0, iC=0; const speed=opts.speed||28; const pause=opts.pause||700; let live=true;
+    function tick(){
+      if(!live) return;
+      if(iL >= lines.length) return;
+      const line = lines[iL];
+      if(iC <= line.length){
+        const prefix = el.textContent.slice(0, el.textContent.lastIndexOf('\n')+1);
+        el.innerHTML = syntaxColor(prefix + line.slice(0,iC) + (iC % 2 ? '<span style="opacity:.6">▌</span>' : ''));
+        iC++;
+        microClick(0.02 + Math.random()*0.03);
+        setTimeout(tick, speed + (Math.random()*12 - 6));
+      } else {
+        el.innerHTML = el.innerHTML.replace(/▌<\/span>$/, '') + '\n';
+        iL++; iC=0;
+        setTimeout(tick, pause);
+      }
+    }
+    tick();
+    return {stop: ()=> live=false};
+  }
+
+  // very small synth per keystroke
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const aCtx = AudioContext ? new AudioContext() : null;
+  function microClick(vol=0.04){
+  }
+
+
+  // syntax colorizer (very small)
+  function syntaxColor(txt){
+    // quick regex-based color
+    return txt
+  }
+
+  // content lines (customize)
+  const heroEl = document.getElementById('hero-terminal');
+  const aboutEl = document.getElementById('about-terminal');
+  const ctfEl = document.getElementById('ctf-terminal');
+
+  const heroLines = [
+    "h0ll9@localhost ~ $",
+    "h0ll9@localhost ~ $",
+    "h0ll9@localhost ~ $ whoami"
+  ];
+  const aboutLines = [ 
+    "Cybersecurity enthusiast and student on a mission to make the internet safer. Sharing my journey, projects, and experiments as I grow in the cybersecurity world"
+  ];
+//  "[HackTheBox] • machines rooted: 58  • contributor",
+  const ctfLines = [
+    "[ TryHackMe ]  • 99 rooms solved  • paths: Red, Blue",  
+    "[ Defenders ]   • 10 rooms solved • blue-team highlights",
+    "[ HackTheBox ]   • 7 rooms solved ",
+    "[ PortSwigger ]   • 10 rooms solved • Web Application",
+  ];
+
+  // immediate hero type
+  typer(heroEl, heroLines, {speed:50, pause:700});
+
+  /* Intersection reveal & start typing when visible */
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(ent => {
+      if(ent.isIntersecting){
+        ent.target.classList.add('visible');
+        if(ent.target.id === 'about' && !ent.target.dataset.started){
+          typer(aboutEl, aboutLines, {speed:26, pause:600}); ent.target.dataset.started='1';
+        }
+        // if(ent.target.id === 'ctf' && !ent.target.dataset.started){
+        //   typer(ctfEl, ctfLines, {speed:28, pause:700}); ent.target.dataset.started='1';
+        // }
+        if(ent.target.id === 'skills' && !ent.target.dataset.started){
+          document.querySelectorAll('.bar-fill').forEach(b => { const w=b.getAttribute('data-fill')||'60%'; setTimeout(()=> b.style.width = w, 220); });
+          ent.target.dataset.started='1';
+        }
+      }
+    });
+  }, {threshold:0.18});
+  reveals.forEach(r => io.observe(r));
+
+  /* ---------- Helper UI functions ---------- */
+  window.openLink = (u) => { window.open(u,'_blank','noopener'); };
+  window.copyEmail = () => {
+    const e = 'lakshmishaholla9@gmail.com';
+    navigator.clipboard?.writeText(e).then(()=> alert('Email copied: ' + e)).catch(()=> alert('Copy failed — email: ' + e));
+  };
+  window.scrollToId = (id) => { const el = document.querySelector(id); if(el) el.scrollIntoView({behavior:'smooth', block:'center'}); };
+
+  window.microPulse = (btn) => {
+    btn.animate([{transform:'translateY(0)'},{transform:'translateY(-10px)'},{transform:'translateY(0)'}], {duration:420,easing:'cubic-bezier(.2,.9,.2,1)'});
+    microClick(0.08);
+  };
+
+  /* ---------- Badges micro-interaction ---------- */
+  document.querySelectorAll('.badge').forEach(b => {
+    b.addEventListener('click', () => {
+      microClick(0.12);
+      b.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}], {duration:520,easing:'cubic-bezier(.2,.9,.2,1)'});
+    });
+    b.addEventListener('mouseover', () => {
+      const rect = b.getBoundingClientRect();
+      spawnParticle(rect.left + Math.random()*rect.width, rect.top + Math.random()*rect.height, {life:50, r:2});
+    });
+  });
+
+  /* ---------- Resume modal ---------- */
+  const modal = document.getElementById('modal');
+  const resumeBtn = document.getElementById('resumeBtn');
+  resumeBtn.addEventListener('click', ()=> { modal.style.display='flex'; microClick(0.07); });
+  window.showModal = function(){ modal.style.display='flex'; microClick(0.06); }
+  window.closeModal = function(){ modal.style.display='none'; }
+  modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+
+  /* ---------- Particle spawn for badge hover and mousemove ---------- */
+  document.addEventListener('mousemove', (e) => {
+    for(let i=0;i<2;i++) spawnParticle(e.clientX + (Math.random()-0.5)*8, e.clientY + (Math.random()-0.5)*8, {life:40 + Math.random()*20, r:1+Math.random()*2});
+  });
+
+  /* ---------- occasional matrix bursts ---------- */
+  setInterval(()=>{ for(let k=0;k<4;k++){ const i=Math.floor(Math.random()*drops.length); drops[i]=Math.random()*10; } }, 1200);
+
+})(); // IIFE end
+</script>
 </body>
 </html>
