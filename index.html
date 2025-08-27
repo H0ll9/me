@@ -8,7 +8,6 @@
 <style>
 
   :root{
-    
     --bg:#06040a;                
     --panel:#0a0b12;            
     --neon-cyan:#00f0ff;
@@ -17,31 +16,17 @@
     --muted-cyan:rgba(0,240,255,0.12);
     --glass: rgba(255,255,255,0.02);
     --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
-    --ease:cubic-bezier(.16,.9,.3,1); 
-   
-    /* --bg:#06040a;                
-    --panel:#0a0b12;            
-    --neon-cyan:hsl(93, 100%, 51%);
-    --neon-magenta:#00ffff;
-    --neon-purple:#7fff3f;
-    --muted-cyan:rgba(0,240,255,0.12);
-    --glass: rgba(255,255,255,0.02);
-    --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
-    --ease:cubic-bezier(.16,.9,.3,1);  */
-   
-   
-
+    --ease:cubic-bezier(.16,.9,.3,1);
   }
 
   .redteam{
-    color: #fd0202;
+    color: #f81f1f;
     background: transparent;
     border: none;
-
 }
 
 .blueteam{
-    color: #0846f0b0;
+    color: #026bff;
     background: transparent;
     border: none
 }
@@ -83,7 +68,6 @@
     cursor:pointer
     }
 
-  /* Canvas layers */
   
   canvas{
       position:fixed;
@@ -149,16 +133,23 @@
   .btn{
     padding:8px 12px;
     border-radius:8px;
-    border:1px solid rgba(255,255,255,0.03);
+    border:1px solid rgba(255, 255, 255, 0.246);
+    margin-right: 2%;  
     background:transparent;
     color:var(--neon-cyan);
-    font-weight:700
+    font-weight:700;
+    transition:transform .45s var(--ease);
   }
   .btn.alt{
     background:linear-gradient(90deg, rgba(155,89,255,0.06), rgba(255,46,199,0.05));
     color: #fff
   }
 
+  .btn:hover{
+    transform:translateY(-8px) rotateX(4deg);
+    border:1px solid rgb(5, 255, 222);
+  }
+  
   main{
     max-width:1200px;
     margin:10px auto;
@@ -230,28 +221,22 @@
   }
   
   @keyframes glitch{
-    0%{
-      transform:none;
-       border :1px solid rgba(94, 255, 0, 0.863);
+    0%{      
+      border :1px solid rgba(94, 255, 0, 0.863);
     }
     20%{
-      transform:translate(-2px,1px);
       border :1px solid rgba(0, 255, 255, 0.815);
     }
     40%{
-      transform:translate(2px,-1px);
       border :1px solid rgba(98, 245, 13, 0.856);
     }
     60%{
-      transform:translate(-3px,2px);
        border: 1px solid rgba(0, 255, 242, 0.959);
     }
     80%{
-      transform:translate(1px,-1px);
-      border :1px solid rgb(94, 255, 0);
+      border :1px solid rgb(162, 255, 0);
     }
     100%{
-      transform:none;
       border: 1px solid rgba(0, 255, 242, 0.897);
     }
   }
@@ -274,9 +259,8 @@
     transition:transform .45s var(--ease)
   }
   section.card:hover{
-   
     animation:glitch 2.2s infinite;
-    transition:transform .45s ;
+    transition:transform .45s var(--ease);
   }
   .section-head{
     display:flex;
@@ -301,7 +285,6 @@
 
   /* terminal */
   .terminal{
-    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.003));
     padding:14px;
     border-radius:8px;
     border:1px solid rgba(255,255,255,0.02);
@@ -330,20 +313,21 @@
     display:flex;
     flex-direction: row;
     gap:18px;
-    flex-wrap:wrap
+    flex-wrap:wrap;
   }
   .skill-col{
     flex:1;
-    min-width:220px
+    min-width:220px;
   }
   .skill{
-    margin-bottom:12px
+    margin-bottom:12px;
+    
   }
   .skill .label{
     display:flex;
     justify-content:space-between;
     font-size:13px;
-    color:rgba(255,255,255,0.78)
+    color:rgba(255, 255, 255, 0.966)
   }
   .bar{
     height:10px;
@@ -379,18 +363,18 @@
     gap:12px
   }
   .badge{
-    min-width:140px;
+    min-width:100px;
     padding:12px;
     border-radius:10px;
     background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.002));
-    border:1px solid rgba(9, 255, 0, 0.178);
+    border:1px solid rgba(255, 255, 255, 0.202);
     cursor:pointer;
     transition:transform .45s var(--ease)
   }
 
   .badge:hover{
     transform:translateY(-8px) rotateX(4deg);
-     border:1px solid rgba(25, 255, 5, 0.664);
+    border:1px solid rgb(5, 255, 222);
   }
 
   /* resume modal */
@@ -467,7 +451,7 @@
 
       <nav aria-label="Quick links">
         <button class="btn" onclick="scrollToId('#about')">About</button>
-        <button class="btn" onclick="scrollToId('#ctf')">CTFs</button>
+        <button class="btn" onclick="scrollToId('#ctf')">ActiveIn</button>
         <button class="btn" onclick="scrollToId('#projects')">Projects</button>
         <button class="btn alt" onclick="window.open('https://drive.google.com/drive/u/1/folders/1SGG1ueB9sYjheEUzItiXPd26hJbpG6Ej','_blank')">Resume</button>
       </nav>
@@ -486,8 +470,8 @@
           </div>
 
           <aside style="width:320px">
-            <div style="padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(155,89,255,0.03), rgba(255,46,199,0.02));border:1px solid rgba(255,255,255,0.02)">
-              <div style="display:flex;gap:10px;align-items:center">
+            <div style="padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(155,89,255,0.03), rgba(255,46,199,0.02));border:1px solid rgba(255, 255, 255, 0.144)">
+              <div style="display:flex;gap:10px;align-items:center" >
                 <div style="width:56px;height:56px;border-radius:8px;background:linear-gradient(135deg, rgba(0,240,255,0.06), rgba(155,89,255,0.02));display:flex;align-items:center;justify-content:center;">
                   <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="width:36px;height:36px">
                     <circle cx="12" cy="8" r="3"></circle><path d="M6 19c1-3 5-4 6-4s5 1 6 4"></path>
@@ -500,7 +484,7 @@
               </div> 
             </div>
 
-            <div style="margin-top:12px;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.002));border:1px solid rgba(255,255,255,0.02)">
+            <div style="margin-top:12px;padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.002));border:1px solid rgba(255, 255, 255, 0.12)">
               <div style="font-weight:800;color:var(--neon-cyan)">Quick Stats</div>
               <div style="margin-top:8px;color:rgba(255,255,255,0.8)">Pursuing Ethical Hacker Course By CISCO</div>
             </div>
@@ -620,18 +604,13 @@
       <!-- CTFs -->
       <section class="card reveal" id="ctf" aria-labelledby="ctfTitle">
         <div class="section-head"><div class="dot"></div><div class="section-title" id="ctfTitle">Active Learning Platforms</div></div>
-        <!-- <div style="margin-top:12px;display:flex;gap:8px;flex-direction:row;overflow: hidden;"> -->
-        
-
           <a class="btn" class="skill" href="#" onclick="openLink('https://cyberdefenders.org/p/0xFreeL')">  CyberDefender  </a>
           <a class="btn" class="skill" href="#" onclick="openLink('https://leetcode.com/u/zpHBGDxZ1a/')">  Leetcode  </a>
           <a class="btn" class="skill" href="#" onclick="openLink('https://www.hackerrank.com/profile/0xFreeL')">  HackerRank  </a>
           <a class="btn" class="skill" href="#" onclick="openLink('https://tryhackme.com/p/0xFreeL')">  TryHackMe  </a>
           <a class="btn" class="skill" href="#" onclick="openLink('https://app.hackthebox.com/profile/1771253')">  HackTheBox  </a>
-              
-        <!-- </div>  -->
-      </section>
-
+        </section>
+        
       <!-- Projects -->
       <section class="card reveal" id="projects" aria-labelledby="projectsTitle">
         <div class="section-head"><div class="dot"></div><div class="section-title" id="projectsTitle">Selected Projects</div></div>
@@ -736,7 +715,6 @@
       <section class="card reveal" id="badges" aria-labelledby="badgesTitle">
         <div class="section-head"><div class="dot"></div><div class="section-title" id="badgesTitle">Badges & Certifications</div></div>
         <div class="badges" id="badges-container" role="list">
-          
           <div class="badge" role="listitem" onclick="window.open('https://drive.google.com/drive/u/1/folders/1SGG1ueB9sYjheEUzItiXPd26hJbpG6Ej','_blank')" tabindex="0">Ethical Hacker (In Progress)</div>
           <div class="badge" role="listitem" onclick="window.open('https://drive.google.com/drive/u/1/folders/1SGG1ueB9sYjheEUzItiXPd26hJbpG6Ej','_blank')" tabindex="0">Introduction to Cybersecurity</div>
           <div class="badge" role="listitem" onclick="window.open('https://drive.google.com/drive/u/1/folders/1SGG1ueB9sYjheEUzItiXPd26hJbpG6Ej','_blank')" tabindex="0">Cybersecurity Threat Landscape</div>
@@ -745,8 +723,10 @@
           <div class="badge" role="listitem" onclick="window.open('https://tryhackme.com/p/0xFreeL','_blank')" tabindex="0">Hacking Wreath by exploiting and pivoting through a network</div>
           <div class="badge" role="listitem" onclick="window.open('https://tryhackme.com/p/0xFreeL','_blank')" tabindex="0">OWASP Top 10 vulnerability</div>
           <div class="badge" role="listitem" onclick="window.open('https://tryhackme.com/p/0xFreeL','_blank')" tabindex="0">Hash Cracker</div>
-        <div class="badge" role="listitem" onclick="window.open('https://tryhackme.com/p/0xFreeL','_blank')" tabindex="0">EternalBlue</div>
-        
+          <div class="badge" role="listitem" onclick="window.open('https://tryhackme.com/p/0xFreeL','_blank')" tabindex="0">EternalBlue</div>
+          <div class="badge" role="listitem" onclick="openLink('https://cyberdefenders.org/p/0xFreeL')">Threat Hunter</div>
+          <div class="badge" role="listitem" onclick="openLink('https://cyberdefenders.org/p/0xFreeL')">Network Forensics</div>
+          
         </div>  
       </section>
 
@@ -763,16 +743,14 @@
         <div class="meta">Open to internships, collaborations & Jobs.</div>
       </section>
 
-      <footer style="margin-top:22px;color:rgba(255,255,255,0.45);text-align:center;font-size:13px">© 2025 • Enumeration is a key to every impossible problem</footer>
+      <footer style="margin-top:22px;color:rgba(255,255,255,0.45);text-align:center;font-size:13px">© 2025 • Enumeration is like a key to every Impossible Problem • @h0ll9 ©</footer>
     </main>
   </div>
 
 
 
 <script>
-/* ===========================
-   Cinematic Neon Interaction
-   =========================== */
+
 
 (function(){
   /* ---------- Canvas: Matrix (light) ---------- */
@@ -935,9 +913,7 @@
         if(ent.target.id === 'about' && !ent.target.dataset.started){
           typer(aboutEl, aboutLines, {speed:26, pause:600}); ent.target.dataset.started='1';
         }
-        // if(ent.target.id === 'ctf' && !ent.target.dataset.started){
-        //   typer(ctfEl, ctfLines, {speed:28, pause:700}); ent.target.dataset.started='1';
-        // }
+      
         if(ent.target.id === 'skills' && !ent.target.dataset.started){
           document.querySelectorAll('.bar-fill').forEach(b => { const w=b.getAttribute('data-fill')||'60%'; setTimeout(()=> b.style.width = w, 220); });
           ent.target.dataset.started='1';
@@ -972,13 +948,7 @@
     });
   });
 
-  /* ---------- Resume modal ---------- */
-  const modal = document.getElementById('modal');
-  const resumeBtn = document.getElementById('resumeBtn');
-  resumeBtn.addEventListener('click', ()=> { modal.style.display='flex'; microClick(0.07); });
-  window.showModal = function(){ modal.style.display='flex'; microClick(0.06); }
-  window.closeModal = function(){ modal.style.display='none'; }
-  modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+
 
   /* ---------- Particle spawn for badge hover and mousemove ---------- */
   document.addEventListener('mousemove', (e) => {
